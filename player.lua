@@ -66,6 +66,7 @@ player.sprite = sprites.luk
 end
 if love.keyboard.isDown("l") and luk == 2 and arb == 2 then
 player.sprite = sprites.luk1
+
 end
 end
 end

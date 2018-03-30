@@ -21,7 +21,7 @@ health_30()
 health_20()
 health_10()
 health_0()
--- Для моба (ПЕРЕДЕЛАЙ!!!!!)
+-- Моб
 health_mob_90()
 health_mob_80()
 health_mob_70()

@@ -25,7 +25,7 @@ function drawUI()
     lg.draw(sprites.ui_health, 169, 9)
     lg.draw(sprites.ui_empty, 169, 49)
     lg.draw(sprites.ui_empty, 169, 89)
-    lg.draw(sprites.inventory_closed, 500 , 680)
+    lg.draw(sprites.inventory_closed, 523 , 680)
 end
 if gameState == 2 and player_1.dead == false then
   lg.draw(sprites.globalui, 1 , 1)
@@ -43,9 +43,9 @@ end
 function drawArrows()
 lg.setColor(COLORS.white)
 lg.setFont(ui_coins_font)
-lg.draw(sprites.inventory_1, 500 , 680)
-lg.draw(sprites.bow, 545 , 692)
-lg.print(math.floor(arrows),575, 730)
+lg.draw(sprites.inventory_1, 523 , 680)
+lg.draw(sprites.bow, 568 , 692)
+lg.print(math.floor(arrows),598, 730)
 end
 --[[ Отрисовка UI монеток
 function drawCoins()

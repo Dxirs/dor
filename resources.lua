@@ -56,6 +56,7 @@ sprites.p224 = lg.newImage('assets/sprites/dialog/p224.png')
 sprites.p225 = lg.newImage('assets/sprites/dialog/p225.png')
 sprites.p236 = lg.newImage('assets/sprites/dialog/p236.png')
 sprites.p236_1 = lg.newImage('assets/sprites/dialog/p236_1.png')
+sprites.heart_0 = lg.newImage('assets/sprites/heart_0.png')
 -- NPС SPRITES
 sprites.npcanim = lg.newImage('assets/sprites/animation/npc/npc_anim_stay.png')
 sprites.npcanimm = lg.newImage('assets/sprites/animation/npc/npc_anim_move.png')
@@ -67,8 +68,14 @@ sprites.npcanimk = lg.newImage('assets/sprites/animation/npc/2npc_anim_move1.png
 sprites.npcanimj = lg.newImage('assets/sprites/animation/npc/2npc_anim_move2.png')
 sprites.npcanimh = lg.newImage('assets/sprites/animation/npc/2npc_anim_cry.png')
 --MENU
+sprites.heart_0 = lg.newImage('assets/sprites/heart_0.png')
+sprites.st = lg.newImage('assets/sprites/menu/st.png')
 sprites.FullHD = lg.newImage('assets/sprites/menu/FullHD.png')
 sprites.FullHD_2 = lg.newImage('assets/sprites/menu/FullHD_2.png')
+sprites.WXGA = lg.newImage('assets/sprites/menu/1366.png')
+sprites.WXGA_2 = lg.newImage('assets/sprites/menu/1366_2.png')
+sprites.WX = lg.newImage('assets/sprites/menu/1600.png')
+sprites.WX_2 = lg.newImage('assets/sprites/menu/1600_2.png')
 sprites.HD = lg.newImage('assets/sprites/menu/HD.png')
 sprites.HD_2 = lg.newImage('assets/sprites/menu/HD_2.png')
 sprites.options = lg.newImage('assets/sprites/menu/options.png')
@@ -146,6 +153,7 @@ m = 2
 arrows = 10 -- Количество стрел для первого игрока
 arrows2 = 10 -- Количество стрел для первого игрока
 arb = 1 -- Статус отсутствия лука у игроков
+health_pack = 1
 tp = 1 --
 bird = 1
 kg = 1
@@ -155,8 +163,9 @@ to = 1
 tt = 4
 tr = 5
 rt = 3
---
+rr = 2
 te = 10
+--
 ty = 1
 tm = 2
 tm = 4
@@ -225,6 +234,9 @@ if love.keyboard.isDown("f3") then
 main_sound:stop()
 end
 if gameState == 1 and love.keyboard.isDown("escape") then
+love.event.quit()
+end
+if gameState == 3 and love.keyboard.isDown("escape") then
 love.event.quit()
 end
 end

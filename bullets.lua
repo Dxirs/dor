@@ -5,6 +5,7 @@ bullet = {}
 bullet.x = player.body:getX()-30
 bullet.y = player.body:getY()-40
 bullet.speed = 500
+bullet.direction = player_mouse_angle()
 bullet.dead = false
 table.insert(bullets, bullet)
 end

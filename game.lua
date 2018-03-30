@@ -8,6 +8,7 @@
 --height = love.graphics.getHeight( )
 require('ui') -- Подключение Графического интерфейса
 require("resources") -- Подключение всех ресурсов
+cursor = love.mouse.newCursor ("assets/sprites/cursor.png", 0, 0)
 local la = love.audio
 local lg = love.graphics
 local lp = love.physics
@@ -80,10 +81,16 @@ end
 if player.dead == true and player_1.dead == false then -- Отвечает за переключение камеры если умер игрок 1
 cam:lookAt(player_1.body1:getX(), lg.getHeight()/2)
 end
+if player_1.dead == true and player.dead == false and m == 1 then -- Отвечает за переключение камеры если умер игрок 2
+cam:lookAt(player.body:getX()-40, lg.getHeight()/2)
+end
 if player_1.dead == true and player.dead == false and m == 2 then -- Отвечает за переключение камеры если умер игрок 2
 cam:lookAt(player.body:getX(), lg.getHeight()/2)
 end
 if player_1.dead == true and player.dead == false and m == 3 then -- Отвечает за переключение камеры если умер игрок 2
+cam:lookAt(player.body:getX()+116, lg.getHeight()/2)
+end
+if player_1.dead == true and player.dead == false and m == 4 then -- Отвечает за переключение камеры если умер игрок 2
 cam:lookAt(player.body:getX()+300, lg.getHeight()/2)
 end
 if player_1.dead == true and player.dead == true then -- Отвечает за переключение если умерли оба игрока
@@ -149,6 +156,18 @@ end
 if timer11 < 0 then -- Таймер для ...
 timer11 = timer11 + dt
 end
+if health > 10 then
+health = health - 1
+end
+if health < 0 then
+health = health + 1
+end
+if arrows > 10 then
+arrows = arrows - 1
+end
+if arrows < 0 then
+arrows = arrows + 1
+end
 if rt > 3 then -- Ограничение списка меню
 rt = rt - 1
 end
@@ -160,6 +179,12 @@ tt = tt - 1
 end
 if tt <= 0 then -- Ограничение списка меню
 tt = tt + 1
+end
+if rr > 4 then -- Ограничение списка меню
+rr = rr - 1
+end
+if rr <= 0 then -- Ограничение списка меню
+rr = rr + 1
 end
 if tr > 5 then -- Ограничение списка опций
 tr = tr - 1
@@ -222,11 +247,19 @@ end
 function drawGame()
 -- SET TITLE
 love.window.setTitle("Light vs Shadow (FPS:" .. love.timer.getFPS() .. ")") -- отображение fps (количество кадров в секунду)
+love.mouse.setCursor(cursor) -- курсор
+if m == 1 then
+love.graphics.scale( 0.94, sy )
+end
+if m == 2 then
+love.graphics.scale( 1, sy )
+end
 if m == 3 then
+love.graphics.scale( 1.17, sy )
+end
+if m == 4 then
 love.graphics.scale( 1.4, sy )
 end
-
-
 -- Ограничение области камеры номер 1 для первого игрока
 if gameState == 2 then
 if distanceBetween(0,player.body:getY(),player.body:getX(),player.body:getY()) < 2100 then
@@ -410,6 +443,13 @@ coin_sound:play()
 monstr.body2:setX(99999)
 end
 end
+-- пак жизни
+ lg.draw (sprites.heart_0, 2500, 570)
+if health_pack == 1 and distanceBetween(2527,570,player.body:getX(),player.body:getY()) < 40 then
+health = health + 4
+sprites.heart_0 = sprites.pusto
+health_pack = 2
+end
 -- Подключение эндинг текста (текст в конце игры)
 lg.setColor(COLORS.white) -- Цвет шрифта
 lg.setFont(game_over_font) -- Шрифт
@@ -533,6 +573,7 @@ cam:detach() -- Деактивация камеры
 --lg.draw(sprites.menu_start, 515, 300, 0, 2)
 --lg.draw(sprites.menu_options, 515, 400 , 0, 2)
 --lg.draw(sprites.menu_exit, 515, 500 , 0, 2)
+
 -- Меню игры
 if gameState == 1 then
 dvig = 2
@@ -554,6 +595,7 @@ if gameState == 5 then
 dvig = 2
 dvig1 = 2
 end
+--Меню
 if rt == 3 and gameState == 1 then
 lg.draw(sprites.menu_start_pressed, 515, 300, 0, 2)
 lg.draw(sprites.menu_options, 515, 400 , 0, 2)
@@ -575,7 +617,7 @@ player_1.dead = true
 player_1.body1:setX(99999)
 end
 if rt == 2 and gameState == 1 and love.keyboard.isDown("return") then
---Опции
+
 end
 if rt == 1 and gameState == 1 and love.keyboard.isDown("return") then
 love.event.quit()
@@ -610,12 +652,8 @@ love.event.quit()
 end
 if gameState == 5 then
 lg.draw(sprites.options,300,0)
-lg.draw(sprites.HD,405,320)
-lg.draw(sprites.FullHD,555,320)
-lg.draw(sprites.FullHD,705,320)
-lg.draw(sprites.FullHD,855,320)
 end
-if tr == 5 and te == 10 and gameState == 5 then
+if te == 10 and gameState == 5 then
 lg.draw(sprites.song10,560,230)
 main_sound:setVolume (1)
 chirik_sound:setVolume(1)
@@ -623,7 +661,7 @@ coin_sound:setVolume(1)
 game_over_music:setVolume (1)
 menu_sfx:setVolume (1)
 end
-if tr == 5 and te == 9 and gameState == 5 then
+if te == 9 and gameState == 5 then
 lg.draw(sprites.song9,560,230)
 main_sound:setVolume (0.9)
 chirik_sound:setVolume(0.9)
@@ -631,7 +669,7 @@ coin_sound:setVolume(0.9)
 game_over_music:setVolume (0.9)
 menu_sfx:setVolume (0.9)
 end
-if tr == 5 and te == 8 and gameState == 5 then
+if te == 8 and gameState == 5 then
 lg.draw(sprites.song8,560,230)
 main_sound:setVolume (0.8)
 chirik_sound:setVolume(0.8)
@@ -639,7 +677,7 @@ coin_sound:setVolume(0.7)
 game_over_music:setVolume (0.8)
 menu_sfx:setVolume (0.8)
 end
-if tr == 5 and te == 7 and gameState == 5 then
+if te == 7 and gameState == 5 then
 lg.draw(sprites.song7,560,230)
 main_sound:setVolume (0.7)
 chirik_sound:setVolume(0.7)
@@ -647,7 +685,7 @@ coin_sound:setVolume(0.7)
 game_over_music:setVolume (0.7)
 menu_sfx:setVolume (0.7)
 end
-if tr == 5 and te == 6 and gameState == 5 then
+if te == 6 and gameState == 5 then
 lg.draw(sprites.song6,560,230)
 main_sound:setVolume (0.6)
 chirik_sound:setVolume(0.6)
@@ -655,7 +693,7 @@ coin_sound:setVolume(0.6)
 game_over_music:setVolume (0.6)
 menu_sfx:setVolume (0.6)
 end
-if tr == 5 and te == 5 and gameState == 5 then
+if te == 5 and gameState == 5 then
 lg.draw(sprites.song5,560,230)
 main_sound:setVolume (0.5)
 chirik_sound:setVolume(0.5)
@@ -663,7 +701,7 @@ coin_sound:setVolume(0.5)
 game_over_music:setVolume (0.5)
 menu_sfx:setVolume (0.5)
 end
-if tr == 5 and te == 4 and gameState == 5 then
+if te == 4 and gameState == 5 then
 lg.draw(sprites.song4,560,230)
 main_sound:setVolume (0.4)
 chirik_sound:setVolume(0.4)
@@ -671,7 +709,7 @@ coin_sound:setVolume(0.4)
 game_over_music:setVolume (0.4)
 menu_sfx:setVolume (0.4)
 end
-if tr == 5 and te == 3 and gameState == 5 then
+if te == 3 and gameState == 5 then
 lg.draw(sprites.song3,560,230)
 main_sound:setVolume (0.3)
 chirik_sound:setVolume(0.3)
@@ -679,7 +717,7 @@ coin_sound:setVolume(0.3)
 game_over_music:setVolume (0.3)
 menu_sfx:setVolume (0.3)
 end
-if tr == 5 and te == 2 and gameState == 5 then
+if te == 2 and gameState == 5 then
 lg.draw(sprites.song2,560,230)
 main_sound:setVolume (0.2)
 chirik_sound:setVolume(0.2)
@@ -687,7 +725,7 @@ coin_sound:setVolume(0.2)
 game_over_music:setVolume (0.2)
 menu_sfx:setVolume (0.2)
 end
-if tr == 5 and te == 1 and gameState == 5 then
+if te == 1 and gameState == 5 then
 lg.draw(sprites.song1,560,230)
 main_sound:setVolume (0.1)
 chirik_sound:setVolume(0.1)
@@ -695,7 +733,7 @@ coin_sound:setVolume(0.1)
 game_over_music:setVolume (0.1)
 menu_sfx:setVolume (0.1)
 end
-if tr == 5 and te == 0 and gameState == 5 then
+if te == 0 and gameState == 5 then
 lg.draw(sprites.song0,560,230)
 main_sound:setVolume (0)
 chirik_sound:setVolume(0)
@@ -703,17 +741,44 @@ coin_sound:setVolume(0)
 game_over_music:setVolume (0)
 menu_sfx:setVolume (0)
 end
+if tr == 5 and gameState == 5 then
+lg.draw(sprites.st,350,240)
+end
 if tr == 4 and gameState == 5 then
-lg.draw(sprites.options,300,0)
+lg.draw(sprites.st,350,320)
 end
 if tr == 3 and gameState == 5 then
-lg.draw(sprites.options,300,0)
+lg.draw(sprites.st,350,400)
 end
 if tr == 2 and gameState == 5 then
-lg.draw(sprites.options,300,0)
+lg.draw(sprites.st,350,480)
 end
 if tr == 1 and gameState == 5 then
-lg.draw(sprites.options,300,0)
+lg.draw(sprites.st,350,560)
+end
+if rr == 1 and gameState == 5 then
+lg.draw(sprites.HD_2,405,320)
+lg.draw(sprites.WXGA,555,320)
+lg.draw(sprites.WX,705,320)
+lg.draw(sprites.FullHD,855,320)
+end
+if rr == 2 and gameState == 5 then
+lg.draw(sprites.HD,405,320)
+lg.draw(sprites.WXGA_2,555,320)
+lg.draw(sprites.WX,705,320)
+lg.draw(sprites.FullHD,855,320)
+end
+if rr == 3 and gameState == 5 then
+lg.draw(sprites.HD,405,320)
+lg.draw(sprites.WXGA,555,320)
+lg.draw(sprites.WX_2,705,320)
+lg.draw(sprites.FullHD,855,320)
+end
+if rr == 4 and gameState == 5 then
+lg.draw(sprites.HD,405,320)
+lg.draw(sprites.WXGA,555,320)
+lg.draw(sprites.WX,705,320)
+lg.draw(sprites.FullHD_2,855,320)
 end
 if gameState == 5 and love.keyboard.isDown("escape") then
 gameState = 2
@@ -911,16 +976,26 @@ elseif key == "up" and gameState == 5 then
 tr = tr + 1
 elseif key == "down" and gameState == 5 then
 tr = tr - 1
-elseif key == "left" and gameState == 5 then
+elseif key == "left" and gameState == 5 and tr == 5 then
 te = te - 1
-elseif key == "right" and gameState == 5 then
+elseif key == "right" and gameState == 5 and tr == 5 then
 te = te + 1
-elseif key == "5" then
+elseif key == "left" and gameState == 5 and tr == 4 then
+rr = rr - 1
+elseif key == "right" and gameState == 5 and tr == 4 then
+rr = rr + 1
+elseif key == "return" and gameState == 5 and rr == 1 then
+love.window.setMode(1280, 720)
+m = 1
+elseif key == "return" and gameState == 5 and rr == 2 then
 love.window.setMode(1366, 768)
 m = 2
-elseif key == "6" then
+elseif key == "return" and gameState == 5 and rr == 3 then
+love.window.setMode(1600, 900)
 m = 3
+elseif key == "return" and gameState == 5 and rr == 4 then
 love.window.setMode(1920, 1080)
+m = 4
 end
 end
 OtherFunctions()
